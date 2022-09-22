@@ -171,7 +171,7 @@ void InterfaceTask::run() {
         }
     #endif
 
-    motor_task_.setConfig(configs[0]);
+    motor_task_.setConfig(configs[3]);
 
     // How far button is pressed, in range [0, 1]
     float press_value_unit = 0;
