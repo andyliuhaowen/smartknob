@@ -4,6 +4,7 @@
 #include "display_task.h"
 #include "interface_task.h"
 #include "motor_task.h"
+#include "serial_task.h"
 
 #if SK_DISPLAY
 static DisplayTask display_task = DisplayTask(0);
@@ -11,6 +12,7 @@ static DisplayTask* display_task_p = &display_task;
 #else
 static DisplayTask* display_task_p = nullptr;
 #endif
+static SerialTask serial_task = SerialTask(0);
 static MotorTask motor_task = MotorTask(1);
 
 
@@ -23,6 +25,7 @@ void setup() {
 
   motor_task.begin();
   interface_task.begin();
+  serial_task.begin();
 
   #if SK_DISPLAY
   display_task.begin();
@@ -35,7 +38,9 @@ void setup() {
   knob_state_debug_queue = xQueueCreate(1, sizeof(KnobState));
   assert(knob_state_debug_queue != NULL);
 
-  motor_task.addListener(knob_state_debug_queue);
+  // motor_task.addListener(knob_state_debug_queue);
+  
+  motor_task.addListener(serial_task.getKnobStateQueue());
 
   // Free up the loop task
   vTaskDelete(NULL);
