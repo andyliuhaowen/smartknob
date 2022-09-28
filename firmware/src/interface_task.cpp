@@ -272,6 +272,7 @@ void InterfaceTask::handleEvent(AceButton* button, uint8_t event_type, uint8_t b
         case AceButton::kEventPressed:
             if (button->getPin() == PIN_BUTTON_NEXT) {
                 changeConfig(true);
+                Serial.println("BUTTON");
             }
             #if PIN_BUTTON_PREV > -1
                 if (button->getPin() == PIN_BUTTON_PREV) {

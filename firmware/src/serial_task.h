@@ -12,11 +12,13 @@ public:
     SerialTask(const uint8_t task_core);
 
     QueueHandle_t getKnobStateQueue();
+    QueueHandle_t getButtonPressQueue();
 
 protected:
     void run();
 
 private:
     QueueHandle_t knob_state_queue_;
-    uint32_t last_msg_ = 0;
+    uint32_t last_knob_state_msg_ = 0;
+    QueueHandle_t button_press_queue_;
 };
