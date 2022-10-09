@@ -15,5 +15,6 @@ struct KnobConfig {
 struct KnobState {
     int32_t current_position;
     float sub_position_unit;
+    float current_angle;
     KnobConfig config;
 };

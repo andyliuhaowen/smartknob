@@ -32,7 +32,8 @@ void SerialTask::run()
         {
             if (millis() - last_knob_state_msg_ > 100)
             {
-                Serial.printf("ANGLE||%f\r\n", state.sub_position_unit + state.current_position);
+                Serial.printf("ANGLE||%f\r\n", static_cast<int>(state.current_angle - angle_offset_));
+                last_angle_ = state.current_angle;
                 last_knob_state_msg_ = millis();
             }
         }
@@ -67,9 +68,12 @@ void SerialTask::run()
                 new_config.endstop_strength_unit = strtof(ptr, nullptr);
                 ptr = strtok(nullptr, " ");
                 new_config.snap_point = strtof(ptr, nullptr);
-                ptr = strtok(nullptr, " ");
-                strncpy(new_config.descriptor, ptr, 50);
+                strncpy(new_config.descriptor, "Custom", 50);
                 motor_task_.setConfig(new_config);
+            } else if (strncmp(ptr, "SET", MAX_STRING_LEN) == 0) {
+                ptr = strtok(nullptr, "||");
+                float set_angle = strtof(ptr, nullptr);
+                angle_offset_ = last_angle_ - set_angle;
             }
         }
     }

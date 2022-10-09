@@ -393,8 +393,6 @@ void MotorTask::run() {
         motor.PID_velocity.limit = 10; //out_of_bounds ? 10 : 3;
         motor.PID_velocity.P = out_of_bounds ? config.endstop_strength_unit * 4 : config.detent_strength_unit * 4;
 
-
-
         if (fabsf(motor.shaft_velocity) > 60) {
             // Don't apply torque if velocity is too high (helps avoid positive feedback loop/runaway)
             motor.move(0);
@@ -410,6 +408,7 @@ void MotorTask::run() {
             publish({
                 .current_position = config.position,
                 .sub_position_unit = -angle_to_detent_center / config.position_width_radians,
+                .current_angle = static_cast<float>(motor.shaft_angle * 180.0f / PI),
                 .config = config,
             });
             last_publish = millis();

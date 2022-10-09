@@ -25,4 +25,7 @@ private:
     QueueHandle_t button_press_queue_;
 
     MotorTask &motor_task_;
+
+    float angle_offset_ = 0;
+    float last_angle_ = 0;
 };
