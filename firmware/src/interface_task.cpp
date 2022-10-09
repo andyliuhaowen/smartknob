@@ -182,12 +182,6 @@ void InterfaceTask::run() {
         #if PIN_BUTTON_PREV > -1
             button_prev.check();
         #endif
-        if (Serial.available()) {
-            int v = Serial.read();
-            if (v == ' ') {
-                changeConfig(true);
-            }
-        }
 
         #if SK_ALS
             const float LUX_ALPHA = 0.005;
@@ -196,15 +190,15 @@ void InterfaceTask::run() {
             lux_avg = lux * LUX_ALPHA + lux_avg * (1 - LUX_ALPHA);
             static uint32_t last_als;
             if (millis() - last_als > 1000) {
-                Serial.print("millilux: "); Serial.println(lux*1000);
+                // Serial.print("millilux: "); Serial.println(lux*1000);
                 last_als = millis();
             }
         #endif
 
         #if SK_STRAIN
             // TODO: calibrate and track (long term moving average) zero point (lower); allow calibration of set point offset
-            const int32_t lower = 950000;
-            const int32_t upper = 1800000;
+            const int32_t lower = 1600000;
+            const int32_t upper = 2400000;
             if (scale.wait_ready_timeout(100)) {
                 int32_t reading = scale.read();
 
@@ -223,7 +217,8 @@ void InterfaceTask::run() {
                     if (!pressed && press_value_unit > 0.75) {
                         motor_task_.playHaptic(true);
                         pressed = true;
-                        changeConfig(true);
+                        // changeConfig(true);
+                        Serial.println("BUTTON");
                     } else if (pressed && press_value_unit < 0.25) {
                         motor_task_.playHaptic(false);
                         pressed = false;
@@ -272,7 +267,6 @@ void InterfaceTask::handleEvent(AceButton* button, uint8_t event_type, uint8_t b
         case AceButton::kEventPressed:
             if (button->getPin() == PIN_BUTTON_NEXT) {
                 changeConfig(true);
-                Serial.println("BUTTON");
             }
             #if PIN_BUTTON_PREV > -1
                 if (button->getPin() == PIN_BUTTON_PREV) {
