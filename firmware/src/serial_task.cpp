@@ -32,7 +32,7 @@ void SerialTask::run()
         {
             if (millis() - last_knob_state_msg_ > 100)
             {
-                Serial.printf("ANGLE||%f\r\n", static_cast<int>(state.current_angle - angle_offset_));
+                Serial.printf("ANGLE||%d\r\n", static_cast<int>(state.current_angle - angle_offset_));
                 last_angle_ = state.current_angle;
                 last_knob_state_msg_ = millis();
             }
