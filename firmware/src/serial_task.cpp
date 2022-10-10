@@ -70,10 +70,14 @@ void SerialTask::run()
                 new_config.snap_point = strtof(ptr, nullptr);
                 strncpy(new_config.descriptor, "Custom", 50);
                 motor_task_.setConfig(new_config);
-            } else if (strncmp(ptr, "SET", MAX_STRING_LEN) == 0) {
+                Serial.printf("Read new config, config is: %d %d %f %f %f %f\r\n", new_config.num_positions, new_config.position, new_config.position_width_radians, new_config.detent_strength_unit, new_config.endstop_strength_unit, new_config.snap_point);
+            }
+            else if (strncmp(ptr, "SET", MAX_STRING_LEN) == 0)
+            {
                 ptr = strtok(nullptr, "||");
                 float set_angle = strtof(ptr, nullptr);
                 angle_offset_ = last_angle_ - set_angle;
+                Serial.printf("Read set, set target is: %f\r\n", set_angle);
             }
         }
     }
