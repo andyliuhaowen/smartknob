@@ -57,9 +57,9 @@ void SerialTask::run()
             {
                 ptr = strtok(nullptr, " ");
                 KnobConfig new_config;
-                new_config.num_positions = strtod(ptr, nullptr);
+                new_config.num_positions = strtol(ptr, nullptr, 10);
                 ptr = strtok(nullptr, " ");
-                new_config.position = strtod(ptr, nullptr);
+                new_config.position = strtol(ptr, nullptr, 10);
                 ptr = strtok(nullptr, " ");
                 new_config.position_width_radians = strtof(ptr, nullptr) * PI / 180;
                 ptr = strtok(nullptr, " ");
