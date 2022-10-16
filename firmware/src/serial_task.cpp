@@ -42,11 +42,11 @@ QueueHandle_t SerialTask::getButtonPressQueue() {
             String receivedString = Serial.readStringUntil('\0');
             char charArr[MAX_STRING_LEN];
             receivedString.toCharArray(charArr, MAX_STRING_LEN);
-            std::string input_view(charArr);
+            std::string full_msg(charArr);
             std::string::size_type start = 0;
-            std::string::size_type end = input_view.find("||");
-            std::string msg_type = input_view.substr(start, end - start);
-            std::string msg_value = input_view.substr(end + 2);
+            std::string::size_type end = full_msg.find("||");
+            std::string msg_type = full_msg.substr(start, end - start);
+            std::string msg_value = full_msg.substr(end + 2);
             Serial.printf("Received message %s\n", msg_value.data());
 
             // Expects message formats of:
@@ -59,36 +59,36 @@ QueueHandle_t SerialTask::getButtonPressQueue() {
                 token_str.reserve(50);
 
                 start = 0;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.num_positions = std::stoi(token_str, nullptr);
 
                 start = end + 1;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.position = std::stoi(token_str, nullptr);
 
                 start = end + 1;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.position_width_radians =
                         std::stof(token_str, nullptr) *
                         static_cast<float>(PI) / 180;
 
                 start = end + 1;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.detent_strength_unit = std::stof(token_str,
                                                             nullptr);
 
                 start = end + 1;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.endstop_strength_unit = std::stof(token_str,
                                                              nullptr);
 
                 start = end + 1;
-                end = input_view.find(' ', start);
+                end = msg_value.find(' ', start);
                 token_str = msg_value.substr(start, end - start);
                 new_config.snap_point = std::stof(token_str, nullptr);
 
