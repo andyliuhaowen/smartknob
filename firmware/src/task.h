@@ -22,33 +22,35 @@
 // Inspired by https://fjrg76.wordpress.com/2018/05/23/objectifying-task-creation-in-freertos-ii/
 template<class T>
 class Task {
-    public:
-        Task(const char* name, uint32_t stackDepth, UBaseType_t priority, const BaseType_t coreId = tskNO_AFFINITY) : 
-                name { name },
-                stackDepth {stackDepth},
-                priority { priority },
-                coreId { coreId }
-        {}
-        virtual ~Task() {};
+public:
+    Task(const char *name, uint32_t stackDepth, UBaseType_t priority, const BaseType_t coreId = tskNO_AFFINITY) :
+            name{name},
+            stackDepth{stackDepth},
+            priority{priority},
+            taskHandle{},
+            coreId{coreId} {}
 
-        TaskHandle_t getHandle() {
-            return taskHandle;
-        }
+    virtual ~Task() = default;;
 
-        void begin() {
-            BaseType_t result = xTaskCreatePinnedToCore(taskFunction, name, stackDepth, this, priority, &taskHandle, coreId);
-            assert("Failed to create task" && result == pdPASS);
-        }
+    TaskHandle_t getHandle() {
+        return taskHandle;
+    }
 
-    private:
-        static void taskFunction(void* params) {
-            T* t = static_cast<T*>(params);
-            t->run();
-        }
+    void begin() {
+        BaseType_t result = xTaskCreatePinnedToCore(taskFunction, name, stackDepth, this, priority, &taskHandle,
+                                                    coreId);
+        assert("Failed to create task" && result == pdPASS);
+    }
 
-        const char* name;
-        uint32_t stackDepth;
-        UBaseType_t priority;
-        TaskHandle_t taskHandle;
-        const BaseType_t coreId;
+private:
+    static void taskFunction(void *params) {
+        T *t = static_cast<T *>(params);
+        t->run();
+    }
+
+    const char *name;
+    uint32_t stackDepth;
+    UBaseType_t priority;
+    TaskHandle_t taskHandle;
+    const BaseType_t coreId;
 };
