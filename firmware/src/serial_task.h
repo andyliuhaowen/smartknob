@@ -11,13 +11,13 @@ class SerialTask : public Task<SerialTask>
 {
     friend class Task<SerialTask>; // Allow base Task to invoke protected run()
 public:
-    SerialTask(const uint8_t task_core, MotorTask &motor_task);
+    SerialTask(uint8_t task_core, MotorTask &motor_task);
 
     QueueHandle_t getKnobStateQueue();
     QueueHandle_t getButtonPressQueue();
 
 protected:
-    void run();
+    [[noreturn]] void run();
 
 private:
     QueueHandle_t knob_state_queue_;
