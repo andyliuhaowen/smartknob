@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <SimpleFOC.h>
 
 #include "display_task.h"
 #include "interface_task.h"
@@ -43,7 +42,7 @@ void setup() {
   motor_task.addListener(serial_task.getKnobStateQueue());
 
   // Free up the loop task
-  vTaskDelete(NULL);
+  vTaskDelete(nullptr);
 }
 
 

@@ -29,8 +29,7 @@ class MotorTask : public Task<MotorTask> {
     friend class Task<MotorTask>; // Allow base Task to invoke protected run()
 
     public:
-        MotorTask(const uint8_t task_core);
-        ~MotorTask();
+        explicit MotorTask(uint8_t task_core);
 
         void setConfig(const KnobConfig& config);
         void playHaptic(bool press);
