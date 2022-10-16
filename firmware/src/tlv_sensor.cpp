@@ -2,8 +2,6 @@
 
 static const float ALPHA = 1;
 
-TlvSensor::TlvSensor() {}
-
 void TlvSensor::init(TwoWire* wire, bool invert) {
   wire_ = wire;
   invert_ = invert;
@@ -28,7 +26,7 @@ float TlvSensor::getSensorAngle() {
 
       bool all_same = true;
       uint8_t match_frame = frame_counts_[0];
-      for (uint8_t i = 1; i < sizeof(frame_counts_); i++) {
+      for (unsigned int i = 1; i < sizeof(frame_counts_); i++) {
         if (frame_counts_[i] != match_frame) {
           all_same = false;
           break;
@@ -38,12 +36,12 @@ float TlvSensor::getSensorAngle() {
         Serial.println("LOCKED!");
         init(wire_, invert_);
         // Force unique frame counts to avoid reset loop
-        for (uint8_t i = 1; i < sizeof(frame_counts_); i++) {
+        for (unsigned int i = 1; i < sizeof(frame_counts_); i++) {
           frame_counts_[i] = i;
         }
       }
     }
-    float rad = (invert_ ? -1 : 1) * atan2f(y_, x_);
+    float rad = (invert_ ? -1.0f : 1.0f) * atan2f(y_, x_);
     if (rad < 0) {
         rad += 2*PI;
     }

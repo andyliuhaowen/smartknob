@@ -19,7 +19,7 @@
 
 class SemaphoreGuard {
     public:
-        SemaphoreGuard(SemaphoreHandle_t handle) : handle_{handle} {
+        explicit SemaphoreGuard(SemaphoreHandle_t handle) : handle_{handle} {
             xSemaphoreTake(handle_, portMAX_DELAY);
         }
         ~SemaphoreGuard() {

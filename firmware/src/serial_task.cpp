@@ -1,5 +1,4 @@
 #include <string>
-#include <string_view>
 
 #include "serial_task.h"
 #include "knob_data.h"
@@ -43,11 +42,11 @@ QueueHandle_t SerialTask::getButtonPressQueue() {
             String receivedString = Serial.readStringUntil('\0');
             char charArr[MAX_STRING_LEN];
             receivedString.toCharArray(charArr, MAX_STRING_LEN);
-            std::string_view input_view(charArr);
-            std::string_view::size_type start = 0;
-            std::string_view::size_type end = input_view.find("||");
-            std::string_view msg_type = input_view.substr(start, end - start);
-            std::string_view msg_value = input_view.substr(end + 2);
+            std::string input_view(charArr);
+            std::string::size_type start = 0;
+            std::string::size_type end = input_view.find("||");
+            std::string msg_type = input_view.substr(start, end - start);
+            std::string msg_value = input_view.substr(end + 2);
             Serial.printf("Received message %s\n", msg_value.data());
 
             // Expects message formats of:

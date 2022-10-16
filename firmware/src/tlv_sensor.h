@@ -5,7 +5,7 @@
 
 class TlvSensor : public Sensor {
     public:
-        TlvSensor();
+        TlvSensor() = default;
 
         // initialize the sensor hardware
         void init(TwoWire* wire, bool invert);
@@ -15,7 +15,7 @@ class TlvSensor : public Sensor {
         //  - This method is pure virtual and must be implemented in subclasses.
         //    Calling this method directly does not update the base-class internal fields.
         //    Use update() when calling from outside code.
-        float getSensorAngle();
+        float getSensorAngle() override;
     private:
         Tlv493d tlv_ = Tlv493d();
         float x_;
